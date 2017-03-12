@@ -8,18 +8,31 @@ This was mostly set up using Windows 10, but should be pretty platform agnostic.
 Using a modification of https://github.com/alexcasalboni/serverless-starter-python. This one seems to have a pretty good separation of the code and serverless, so the code isn't reliant on serverless.
 
 api <-- folder with all the python junk
+
 -- function1 <------------ will be a folder for each function
+  
   -- handler.py <--------- wrapper script to call on the function in the lib folder
+
 -- function2 <------------ some other function
+  
   -- handler.py <--------- see above
+
 -- function3 <------------ see above
+  
   -- handler.py <--------- see above
+
 -- lib <------------------ folder containing the actual, non-serverless code
-  -- \__init__.py <------- module to load the other functions in lib
+  
+  -- \_\_init\_\_.py <------- module to load the other functions in lib
+  
   -- functiongroup1.py <-- contains function1 and function2
+  
   -- functiongroup2.py <-- contains function3
+
 -- vendored <------------- git ignored folder containing the python dependencies in requirements.txt
+
 -- requirements.txt <----- list of dependencies that gets installed with pip during deploy
+
 buildspec.yml <----------- buildspec file for deploying with codedeploy
 
 ### Side Notes
