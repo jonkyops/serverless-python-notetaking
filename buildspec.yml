@@ -1,0 +1,29 @@
+version: 0.1
+
+environment_variables:
+  plaintext:
+    SLS_DEBUG: "*"
+
+phases:
+  install:
+    commands:
+      - apt-get update -y
+      - npm install -g serverless
+  pre_build:
+    commands:
+      - echo Installing python requirements
+      - pip install -t api/vendored/ -r api/requirements.txt
+  build:
+    commands:
+      - echo Build started on `date`
+  post_build:
+    commands:
+      - serverless deploy --stage $APP_STAGE --verbose
+      - echo Build completed on `date`
+
+artifacts:
+  files:
+    -  .serverless/${APP_STAGE}-serverless-python-notetaking.zip
+    -  .serverless/cloudformation-template-update-stack.json
+    -  .serverless/cloudformation-template-create-stack.json
+  discard-paths: yes
