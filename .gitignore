@@ -93,3 +93,7 @@ api/vendored/*
 
 #SERVERLESS
 .serverless/*
+
+garbage/*
+
+secrets.txt

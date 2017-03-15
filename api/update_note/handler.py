@@ -7,4 +7,4 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../")
 import lib
 
 def handler(event, context):
-    return lib.get_hello(event)
+    return lib.update_note(event, context)

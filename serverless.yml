@@ -20,6 +20,19 @@ service: serverless-python-notetaking
 provider:
   name: aws
   runtime: python2.7
+  # 'iamRoleStatement' defines the permission policy for the Lambda function.
+  # In this case Lambda functions are granted with permissions to access DynamoDB.
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 # you can overwrite defaults here
 #  stage: dev
@@ -53,11 +66,59 @@ package:
 #    - include-me-dir/**
   exclude:
     - api/hello
+    - api/create_note
+    - api/read_note
+    - api/read_all
+    - api/update_note
 
 functions:
   hello:
     handler: api/hello/handler.handler
-
+  createNote:
+    handler: api/create_note/handler.handler
+    events:
+      - http:
+          path: notes/create
+          method: POST
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-east-1:339541073473:userpool/us-east-1_7KAbwNatF
+  readNote:
+    handler: api/read_note/handler.handler
+    events:
+      - http:
+          path: notes/{id}
+          method: GET
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-east-1:339541073473:userpool/us-east-1_7KAbwNatF
+  readAll:
+    handler: api/read_all/handler.handler
+    events:
+      - http:
+          path: notes
+          method: GET
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-east-1:339541073473:userpool/us-east-1_7KAbwNatF
+  updateNote:
+    handler: api/update_note/handler.handler
+    events:
+      - http:
+          path: notes/{id}
+          method: PUT
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-east-1:339541073473:userpool/us-east-1_7KAbwNatF
+  deleteNote:
+    handler: api/delete_note/handler.handler
+    events:
+      - http:
+          path: notes/{id}
+          method: DELETE
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-east-1:339541073473:userpool/us-east-1_7KAbwNatF
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -122,7 +183,18 @@ resources:
                 - dynamodb:UpdateItem
               Resource: arn:aws:dynamodb:*:*:table/notes
         Roles:
-          - Ref: IamRoleLambdaExecution   
+          - Ref: IamRoleLambdaExecution
+    NotesAttachmentBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicReadWrite
+        BucketName: jonkyops-notes-attachments
+        CorsConfiguration:
+          CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET, PUT, POST, HEAD]
+            AllowedOrigins: ['*']
+            MaxAge: '3000'
 #  NewResource:
 #      Type: AWS::S3::Bucket
 #      Properties:
