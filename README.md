@@ -63,7 +63,21 @@ already done, used python instead
 #### Add Support for ES6 JavaScript
 This is where things really started to get different. The two modules loaded up here seemed more for converting newer JS into something compatible with lambda, so nothing was done here.
 
+Edit: Looks like I might have been wrong about this one. React is solely for the front end, so I installed everything but the babel components
+
 #### Add a Create Note API
+This section is going to apply for all the APIs. Learned a lot about how DynamoDB expects data and how it handles typing, so that was nice. Moved the bulk of the APIs down to a single file, since they shared the same modules and having them separated just seemed unnecessary 
 
+#### Add a get note API
+See above
 
+#### Add a list all the notes API
+See above
 
+#### Add an update note API
+See above
+
+#### Add a delete note API
+See above
+
+## Deploying the backend

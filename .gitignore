@@ -15,7 +15,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+#lib/
 lib64/
 parts/
 sdist/
@@ -88,12 +88,15 @@ ENV/
 # Rope project settings
 .ropeproject
 
-#vendored
+# vendored
 api/vendored/*
+node_modules/*
 
-#SERVERLESS
+# SERVERLESS
 .serverless/*
 
+# Garbage
 garbage/*
 
+# secrets text
 secrets.txt
